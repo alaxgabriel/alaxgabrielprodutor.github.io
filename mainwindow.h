@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTcpSocket>
 #include <QDebug>
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -17,13 +18,16 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
+    QTimer *timer;
+
+
   void tcpConnect();
 public slots:
   void putData();
   void connecting();
   void disconnecting();
   void starting();
-  void timerEvent(QTimerEvent *event);
+  void stopping();
 private:
   Ui::MainWindow *ui;
   QTcpSocket *socket;

@@ -2,13 +2,16 @@
 #include "ui_mainwindow.h"
 #include <QDateTime>
 #include <QString>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent), ui(new Ui::MainWindow){
   ui->setupUi(this);
   socket = new QTcpSocket(this);
+  timer = new QTimer(this);
+  connect(timer,SIGNAL(timeout()),this,SLOT(putData()));
 
-
+  //ui->horizontalSlider_Timing->sliderPosition()
 }
 
 void MainWindow::tcpConnect(){
@@ -81,15 +84,16 @@ void MainWindow::disconnecting()
 
 void MainWindow::starting()
 {
-    putData();
+    timer->start(ui->horizontalSlider_Timing->sliderPosition()*1000);
 }
 
-void MainWindow::timerEvent(QTimerEvent *event)
+void MainWindow::stopping()
 {
-
+    timer->stop();
 }
 
 MainWindow::~MainWindow(){
   delete socket;
   delete ui;
+  delete timer;
 }
