@@ -84,6 +84,11 @@ void MainWindow::starting()
     putData();
 }
 
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+    
+}
+
 MainWindow::~MainWindow(){
   delete socket;
   delete ui;
