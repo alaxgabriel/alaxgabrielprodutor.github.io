@@ -23,6 +23,7 @@ public slots:
   void connecting();
   void disconnecting();
   void starting();
+  void timerEvent(QTimerEvent *event);
 private:
   Ui::MainWindow *ui;
   QTcpSocket *socket;

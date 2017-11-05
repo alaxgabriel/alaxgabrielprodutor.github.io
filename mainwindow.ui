@@ -117,7 +117,14 @@
             </widget>
            </item>
            <item>
-            <widget class="QSlider" name="horizontalSlider_3">
+            <widget class="QSlider" name="horizontalSlider_Timing">
+             <property name="font">
+              <font>
+               <weight>50</weight>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="mouseTracking">
               <bool>false</bool>
              </property>
@@ -127,8 +134,14 @@
              <property name="acceptDrops">
               <bool>false</bool>
              </property>
+             <property name="toolTip">
+              <string/>
+             </property>
              <property name="autoFillBackground">
               <bool>false</bool>
+             </property>
+             <property name="inputMethodHints">
+              <set>Qt::ImhDigitsOnly|Qt::ImhFormattedNumbersOnly</set>
              </property>
              <property name="maximum">
               <number>2</number>
@@ -141,6 +154,12 @@
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="invertedAppearance">
+              <bool>false</bool>
+             </property>
+             <property name="invertedControls">
+              <bool>false</bool>
              </property>
              <property name="tickPosition">
               <enum>QSlider::TicksBelow</enum>
