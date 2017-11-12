@@ -8,10 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent), ui(new Ui::MainWindow){
   ui->setupUi(this);
   socket = new QTcpSocket(this);
+  id = 0;
   timer = new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(putData()));
 
-  //ui->horizontalSlider_Timing->sliderPosition()
 }
 
 void MainWindow::tcpConnect(){
@@ -26,7 +26,6 @@ void MainWindow::tcpConnect(){
 }
 
 void MainWindow::putData(){
-  QDateTime datetime;
   QString str;
   qint64 msecdate;
   QString random;
@@ -39,7 +38,6 @@ void MainWindow::putData(){
   min = ui->horizontalSlider_Min->sliderPosition();
   max = ui->horizontalSlider_Max->sliderPosition();
 
-  //QString::number(qrand()%35)
   if(max>min){
     interval = max - min + 1;
     numRand = (qrand()%interval) + (min);
@@ -65,7 +63,7 @@ void MainWindow::putData(){
       qDebug() << str;
       qDebug() << socket->write(str.toStdString().c_str()) << " bytes written";
       if(socket->waitForBytesWritten(3000)){
-        qDebug() << "wrote";
+        qDebug() << "wrote - " << id;
       }
   }
   ui->textBrowser->append(str);
@@ -82,14 +80,29 @@ void MainWindow::disconnecting()
     qDebug() << "Disconnected";
 }
 
+void MainWindow::timerEvent(QTimerEvent *e)
+{
+    putData();
+    id = e->timerId();
+}
+
 void MainWindow::starting()
 {
-    timer->start(ui->horizontalSlider_Timing->sliderPosition()*1000);
+    if(id==0){
+        startTimer(ui->horizontalSlider_Timing->value()*1000);
+    }
+    else{
+        killTimer(id);
+        startTimer(ui->horizontalSlider_Timing->value()*1000);
+    }
 }
+
+
 
 void MainWindow::stopping()
 {
-    timer->stop();
+    killTimer(id);
+    id = 0;
 }
 
 MainWindow::~MainWindow(){

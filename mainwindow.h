@@ -26,11 +26,13 @@ public slots:
   void putData();
   void connecting();
   void disconnecting();
+  void timerEvent(QTimerEvent *e);
   void starting();
   void stopping();
 private:
   Ui::MainWindow *ui;
   QTcpSocket *socket;
+  int id;
 };
 
 #endif // MAINWINDOW_H
