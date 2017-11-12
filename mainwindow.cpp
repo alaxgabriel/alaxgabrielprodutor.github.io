@@ -4,17 +4,22 @@
 #include <QString>
 #include <QTimer>
 
+/** \brief Construtor da classe */
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent), ui(new Ui::MainWindow){
+    /**
+        \details Construtor da classe MainWindow que inicializa o objeto
+    */
   ui->setupUi(this);
   socket = new QTcpSocket(this);
   id = 0;
-  timer = new QTimer(this);
-  connect(timer,SIGNAL(timeout()),this,SLOT(putData()));
-
 }
 
+/** \brief Slot de conexao */
 void MainWindow::tcpConnect(){
+    /**
+        \details Slot que conecta o produtor de dados ao servidor
+    */
     qDebug() << ui->lineEdit_ip->text();
   socket->connectToHost(ui->lineEdit_ip->text(),1234);
   if(socket->waitForConnected(3000)){
@@ -25,7 +30,11 @@ void MainWindow::tcpConnect(){
   }
 }
 
+/** \brief Slot produtor de dados */
 void MainWindow::putData(){
+    /**
+        \details Envia dados gerados aleatoriamente para o servidor
+    */
   QString str;
   qint64 msecdate;
   QString random;
@@ -69,25 +78,37 @@ void MainWindow::putData(){
   ui->textBrowser->append(str);
 }
 
-void MainWindow::connecting()
-{
+/** \brief Slot de chamada da conexao */
+void MainWindow::connecting(){
+    /**
+        \details Slot que chama a conexao
+    */
     tcpConnect();
 }
 
-void MainWindow::disconnecting()
-{
+/** \brief Slot de desconexao */
+void MainWindow::disconnecting(){
+    /**
+        \details Slot que desconecta o produtor do servidor
+    */
     socket->disconnectFromHost();
     qDebug() << "Disconnected";
 }
 
-void MainWindow::timerEvent(QTimerEvent *e)
-{
+/** \brief Chamada do evento temporario */
+void MainWindow::timerEvent(QTimerEvent *e){
+    /**
+        \details Slot que, periodicamente, chama a funcao de producao de dados
+    */
     putData();
     id = e->timerId();
 }
 
-void MainWindow::starting()
-{
+/** \brief Slot que inicia o timer */
+void MainWindow::starting(){
+    /**
+        \details Inicia o timer que determinara o periodo de repeticao dos eventos
+    */
     if(id==0){
         startTimer(ui->horizontalSlider_Timing->value()*1000);
     }
@@ -98,15 +119,20 @@ void MainWindow::starting()
 }
 
 
-
-void MainWindow::stopping()
-{
+/** \brief Slot que mata o timer */
+void MainWindow::stopping(){
+    /**
+        \details Finaliza o timer que estiver atuando
+    */
     killTimer(id);
     id = 0;
 }
 
+/** \brief Destrutor da classe */
 MainWindow::~MainWindow(){
+    /**
+        \details Deleta os objetos alocados dinamicamnete
+    */
   delete socket;
   delete ui;
-  delete timer;
 }

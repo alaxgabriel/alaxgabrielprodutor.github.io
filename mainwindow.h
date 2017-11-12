@@ -23,6 +23,7 @@ public:
 
   void tcpConnect();
 public slots:
+  //Cabecalhos dos slots publicos
   void putData();
   void connecting();
   void disconnecting();
